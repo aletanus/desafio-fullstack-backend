@@ -1,0 +1,62 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+enum PhoneNumberCategory {
+  HOME
+  COMMERCIAL
+  PRINCIPAL
+  OTHERS
+  PERSONAL
+}
+
+enum SocialMediaName {
+  FACEBOOK
+  TWITTER
+  INSTAGRAM
+  YOUTUBE
+  LINKEDIN
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id
+  created_at    DateTime
+  name          String
+  email         String    @unique
+  birthday      String?
+  mobile_phone  String?
+  profile_photo String?
+  password      String
+  contact       Contact[]
+
+  @@map("users")
+}
+
+model Contact {
+  id                    String  @id
+  first_name            String
+  last_name             String?
+  nickname              String?
+  birthday              String?
+  email                 String?
+  phone_number          String  @unique
+  phone_number_category String
+  address               String?
+  social_media          String?
+  social_media_name     String?
+  company               String?
+  job_title             String?
+  website               String?
+  user                  User    @relation(fields: [user_id], references: [id])
+  user_id               String
+
+  @@map("contacts")
+}
