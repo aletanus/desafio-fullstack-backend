@@ -5,6 +5,9 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.enableCors({
+    origin: 'https://localhost:3000'
+  });
   const config = new DocumentBuilder()
   .setTitle('Your Contacts App')
   .setDescription(' Stay Connected: Your Ultimate Contacts Companion ')
