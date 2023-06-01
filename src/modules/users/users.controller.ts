@@ -1,9 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UseInterceptors, UploadedFile, BadRequestException } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @ApiTags('Users')
 @Controller('users')
@@ -41,5 +42,21 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   remove(@Param('id') id: string) {
     return this.usersService.remove(id);
+  }
+
+  @Patch('upload/:id')
+  @UseInterceptors(
+    FileInterceptor('profile_photo')
+  )
+  uploadFile(
+    @UploadedFile()
+    profile_photo: Express.Multer.File,
+    @Param('id') id: string,
+  ) {
+    if (!profile_photo) {
+      throw new BadRequestException('No file uploaded');
+    }
+    
+    return this.usersService.uploadFile(profile_photo, id);
   }
 }

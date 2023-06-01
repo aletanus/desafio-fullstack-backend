@@ -5,7 +5,6 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
   const config = new DocumentBuilder()
   .setTitle('Your Contacts App')
   .setDescription(' Stay Connected: Your Ultimate Contacts Companion ')

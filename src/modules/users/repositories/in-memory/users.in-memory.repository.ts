@@ -33,17 +33,23 @@ export class UsersInMemoryRepository implements UsersRepository {
     return plainToInstance(User, user);
   }
 
-  update(id: string, data: UpdateUserDto): User | Promise<User> {
-    const userIndex = this.database.findIndex((user) => user.id === id)
-    this.database[userIndex] = {
-      ...this.database[userIndex],
-      ...data
-    }
-    return plainToInstance(User, this.database[userIndex])
+  // update(id: string, data: UpdateUserDto): User | Promise<User> {
+  //   const userIndex = this.database.findIndex((user) => user.id === id)
+  //   this.database[userIndex] = {
+  //     ...this.database[userIndex],
+  //     ...data
+  //   }
+  //   return plainToInstance(User, this.database[userIndex])
+  // }
+
+  update(id: string, data: UpdateUserDto): Promise<User> | User {
+    throw new Error('Method not implemented.');
   }
   
   delete(id: string): void | Promise<void> {
     const userIndex = this.database.findIndex((user) => user.id === id)
     this.database.splice(userIndex, 1)
   }
+
+
 }
